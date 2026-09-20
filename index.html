@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#166534"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Homestead Ops">
+<link rel="manifest" href="manifest.webmanifest"><title>Homestead Operations by JP</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f4;color:#182018;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:620px;margin:auto;padding:16px 15px 36px}.brand{font-weight:900;font-size:25px}.tag{color:#687168;margin:2px 0 18px}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}.tabs button{min-height:48px;background:#fff;border:1px solid #d8ded8;border-radius:11px;font-weight:800;color:#253025}.tabs button.active{background:#166534;color:#fff;border-color:#166534}
+.card{background:#fff;border:1px solid #dce2dc;border-radius:15px;padding:15px;margin:12px 0}h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:15px 0 8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{font-size:13px;font-weight:800;display:block;margin-bottom:5px}
+input,select,textarea{width:100%;min-height:46px;border:1px solid #ccd5cc;border-radius:10px;padding:9px 11px;font-size:16px;background:#fff;color:#182018}textarea{min-height:85px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;align-items:center;gap:8px;min-height:42px}.check input{width:20px;min-height:20px}
+button{min-height:48px;border-radius:11px;font-size:16px;font-weight:800;cursor:pointer}.primary{width:100%;border:0;background:#166534;color:#fff}.secondary{width:100%;background:#fff;border:1px solid #ccd5cc;color:#182018;margin-top:9px}
+.result{background:#dcfce7;border:1px solid #acd5b3;border-radius:15px;padding:17px;margin-top:13px}.big{font-size:43px;font-weight:900}.muted{color:#667066;font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e2e8e2}.row:last-child{border-bottom:0}.hidden{display:none}.quote{background:#fff;padding:20px;border:1px solid #ddd;border-radius:12px;line-height:1.45}.quote h2{text-align:center}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:480px){.grid,.checks{grid-template-columns:1fr}.tabs{grid-template-columns:1fr 1fr}.big{font-size:38px}}
+</style></head><body><main>
+<div class="brand">🌱 Homestead Operations by JP</div><div class="tag">On-the-spot pricing & customer quotes</div>
+
+<div class="tabs"><button class="active" data-tab="price">Price Job</button><button data-tab="quote">Customer Quote</button></div>
+
+<section id="priceTab">
+<div class="card"><h2>Choose Service</h2>
+<select id="service">
+<option value="mow">Lawn Mowing</option><option value="dethatch">Dethatching</option><option value="aerate">Core Aeration</option><option value="seed">Overseeding</option><option value="cleanup">Yard Cleanup</option><option value="mulch">Mulch Installation</option><option value="wash">Pressure Washing</option>
+</select></div>
+
+<div class="card"><h2>Job Details</h2><div class="grid">
+<div><label>Area / square feet</label><input id="sqft" type="number" min="0" value="5000"></div>
+<div><label>Frequency</label><select id="freq"><option value="1">Weekly</option><option value="1.25">Biweekly</option><option value="1.5">One-time</option></select></div>
+</div>
+<div class="grid" style="margin-top:10px"><div><label>Condition</label><select id="condition"><option value="1">Easy</option><option value="1.15">Average</option><option value="1.3">Difficult</option><option value="1.5">Heavy</option></select></div>
+<div><label>Terrain</label><select id="terrain"><option value="1">Flat</option><option value="1.1">Some slope</option><option value="1.2">Steep</option></select></div></div></div>
+
+<div class="card"><h2>Add-ons</h2><div class="checks">
+<label class="check"><input id="edge" type="checkbox"> Edging +$10</label>
+<label class="check"><input id="bag" type="checkbox"> Bagging +$10</label>
+<label class="check"><input id="trim" type="checkbox"> Trimming +$15</label>
+<label class="check"><input id="cleanupAdd" type="checkbox"> Extra cleanup +$15</label>
+</div></div>
+
+<div class="card"><div class="grid">
+<div><label>Minimum price</label><input id="minimum" type="number" value="45"></div>
+<div><label>Target hourly rate</label><input id="rate" type="number" value="75"></div>
+</div></div>
+
+<button class="primary" id="calculate">CALCULATE QUOTE</button>
+<div class="result" aria-live="polite"><div class="muted">RECOMMENDED PRICE</div><div class="big" id="price">$0</div>
+<div class="row"><span>Base service</span><strong id="base">$0</strong></div><div class="row"><span>Add-ons</span><strong id="addons">$0</strong></div>
+<div class="row"><span>Estimated labor</span><strong id="hours">0.0 hr</strong></div><div class="row"><span>Labor value</span><strong id="labor">$0</strong></div></div>
+<button class="secondary" id="useQuote">USE THIS PRICE FOR CUSTOMER QUOTE</button>
+</section>
+
+<section id="quoteTab" class="hidden">
+<div class="card"><h2>Customer Quote</h2><div class="grid"><div><label>Customer name</label><input id="customer" placeholder="Customer"></div><div><label>Quote number</label><input id="quoteNo" readonly></div></div>
+<div style="margin-top:10px"><label>Property / address</label><input id="address" placeholder="Property address"></div>
+<div style="margin-top:10px"><label>Scope of work</label><textarea id="scope" placeholder="Describe exactly what is included..."></textarea></div>
+<div style="margin-top:10px"><label>Price</label><input id="quotePrice" type="number"></div>
+<div style="margin-top:10px"><label>Notes / terms</label><textarea id="terms">Payment due upon completion unless otherwise agreed. Additional work requires customer approval.</textarea></div></div>
+<button class="primary" id="print">PRINT / SAVE QUOTE</button>
+<button class="secondary" id="back">BACK TO PRICING</button>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id), money=n=>"$"+Math.round(n||0).toLocaleString();
+const baseRates={mow:45,dethatch:0.06,aerate:0.08,seed:0.12,cleanup:0.10,mulch:0.18,wash:0.25};
+const labels={mow:"Lawn Mowing",dethatch:"Dethatching",aerate:"Core Aeration",seed:"Overseeding",cleanup:"Yard Cleanup",mulch:"Mulch Installation",wash:"Pressure Washing"};
+let currentPrice=0;
+function calc(){
+ const service=$("service").value,sqft=Math.max(0,+$("sqft").value||0),freq=+$("freq").value||1,cond=+$("condition").value||1,terrain=+$("terrain").value||1,min=Math.max(0,+$("minimum").value||0),rate=Math.max(0,+$("rate").value||0);
+ let base;
+ if(service==="mow"){base=baseRates.mow;if(sqft>2500)base+=Math.min(70,(sqft-2500)/1000*10);if(sqft>10000)base+=Math.min(50,(sqft-10000)/1000*7);base*=freq*cond*terrain}
+ else base=Math.max(min,sqft*baseRates[service])*cond*terrain;
+ let add=($("edge").checked?10:0)+($("bag").checked?10:0)+($("trim").checked?15:0)+($("cleanupAdd").checked?15:0);
+ let price=Math.max(min,base+add);
+ let hours=service==="mow"?Math.max(.5,Math.min(4,sqft/5000*.65))*cond*terrain:Math.max(.5,sqft/4000*.5)*cond*terrain;
+ currentPrice=Math.round(price);
+ $("price").textContent=money(price);$("base").textContent=money(base);$("addons").textContent=money(add);$("hours").textContent=hours.toFixed(1)+" hr";$("labor").textContent=money(hours*rate);
+}
+document.querySelectorAll("input,select").forEach(x=>x.addEventListener("input",calc));
+$("calculate").onclick=calc;
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("priceTab").classList.toggle("hidden",b.dataset.tab!=="price");$("quoteTab").classList.toggle("hidden",b.dataset.tab!=="quote")});
+$("useQuote").onclick=()=>{ $("quotePrice").value=currentPrice; $("scope").value=labels[$("service").value]+" — "+$("sqft").value+" sq ft. Includes selected add-ons."; $("quoteNo").value="JP-"+Date.now().toString().slice(-6); document.querySelector('[data-tab="quote"]').click(); };
+$("back").onclick=()=>document.querySelector('[data-tab="price"]').click();
+$("print").onclick=()=>{const w=window.open("","_blank");if(!w)return;w.document.write(`<html><head><title>Quote ${$("quoteNo").value}</title><style>body{font-family:Arial;max-width:700px;margin:40px auto}h1{text-align:center}.line{padding:10px 0;border-bottom:1px solid #ddd}.total{font-size:30px;font-weight:bold;margin-top:25px}</style></head><body><h1>Homestead Operations by JP</h1><div class="line"><b>Quote:</b> ${$("quoteNo").value}</div><div class="line"><b>Customer:</b> ${$("customer").value}</div><div class="line"><b>Property:</b> ${$("address").value}</div><div class="line"><b>Scope:</b><br>${$("scope").value.replace(/\\n/g,"<br>")}</div><div class="total">Total: ${money(+$("quotePrice").value)}</div><p>${$("terms").value.replace(/\\n/g,"<br>")}</p></body></html>`);w.document.close();w.print()};
+calc();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
+</script></body></html>

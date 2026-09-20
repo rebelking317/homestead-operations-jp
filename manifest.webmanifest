@@ -1,0 +1,9 @@
+{
+  "name": "Homestead Operations by JP",
+  "short_name": "Homestead Ops",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f4",
+  "theme_color": "#166534",
+  "description": "Field pricing and customer quote app for Homestead Operations by JP."
+}
